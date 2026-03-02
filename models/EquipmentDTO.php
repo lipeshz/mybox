@@ -8,6 +8,8 @@ class Equipment{
     private $manufacturer;
     private $date;
     private $warranty;
+    private $specifications;
+    private $owner;
 
     public function setId($id){
         $this->id = $id;
@@ -71,5 +73,21 @@ class Equipment{
 
     public function getWarranty(){
         return $this->warranty;
+    }
+
+    public function setSpecifications($specifications){
+        $this->specifications = $specifications;
+    }
+
+    public function getSpecifications(){
+        return $this->specifications;
+    }
+
+    public function setOwner($owner){
+        $this->owner = $owner;
+    }
+
+    public function getOwner(){
+        return $this->owner;
     }
 }
