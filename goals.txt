@@ -1,0 +1,9 @@
+=-= CLASSES =-=
+USER
+id, login, password
+
+EQUIPAMENTO
+id, nome, tipo (FK), foto, quantidade, marca, data_aquisiçao, garantia
+
+TIPO 
+id, tipo
