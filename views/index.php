@@ -37,7 +37,9 @@ $equipments = $dao->getByOwner($_SESSION['id']);
                         <option value="month">MONTH</option>
                         <option value="year">YEAR</option>
                     </select>
-                    <button>ADD +</button>
+                    <div id="input-container" class="input-container"></div>
+                    <button type="button" id="add-input" onclick="addInput()">ADD +</button>
+                    <input type="submit" value="Submit" onclick="">
                 </form>
             </div>
          </div>
@@ -52,5 +54,6 @@ $equipments = $dao->getByOwner($_SESSION['id']);
             ?>
          </main>
     </body>
+    <script src="../js/add_input.js"></script>
     <script src="../js/modal.js"></script>
 </html>

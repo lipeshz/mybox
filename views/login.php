@@ -33,7 +33,7 @@ if(isset($_SESSION['login_err'])){
 
                 <?= $err_msg; ?>
 
-                <button type="submit">Login</button>
+                <input type="submit">Login</button>
             </form>    
             
             <!-- <form action="../controllers/register.php" method="post">
