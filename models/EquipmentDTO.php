@@ -76,7 +76,7 @@ class Equipment{
     }
 
     public function setSpecifications($specifications){
-        $this->specifications = $specifications;
+        $this->specifications = json_encode($specifications);
     }
 
     public function getSpecifications(){

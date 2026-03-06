@@ -50,13 +50,12 @@ function stringBuilder(){
     let dataArray = {}
 
     dataRows.forEach(dataRow => {
-        const key = dataRow.querySelector('.json-key').value
+        const key = dataRow.getAttribute('data-name');
         const value = dataRow.querySelector('.json-value').value
 
-        if(key){
+        if(key && value.length > 0){
             dataArray[key] = value
         }
     });
-
     return JSON.stringify(dataArray)
 }
