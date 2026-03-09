@@ -4,6 +4,7 @@
 class User{
     private $id;
     private $login;
+    private $email;
     private $password;
 
     function setId($id){
@@ -20,6 +21,14 @@ class User{
 
     function getLogin(){
         return $this->login;
+    }
+
+    function setEmail($email){
+        $this->email = $email;
+    }
+
+    function getEmail(){
+        return $this->email;
     }
 
     function setPassword($password){

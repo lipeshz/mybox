@@ -33,24 +33,8 @@ if(isset($_SESSION['login_err'])){
 
                 <?= $err_msg; ?>
 
-                <input type="submit">Login</button>
+                <input type="submit">
             </form>    
-            
-            <!-- <form action="../controllers/register.php" method="post">
-                <div class="input-form">
-                    <label for="">Login</label>
-                    <input type="text" name="register" id="">
-                </div>
-
-                <div class="input-form">
-                    <label for="">Password</label>
-                    <input type="password" name="pass" id="">
-                </div>
-
-                <?= $err_msg; ?>
-
-                <button type="submit">Login</button>
-            </form>   -->
         </main>
     </body>
 </html>

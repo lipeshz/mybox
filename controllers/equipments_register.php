@@ -18,16 +18,17 @@ if(!$data){
 
 $name = $data['name'] ?? '';
 $photo = $data['photo'] ?? '';
-$quantity = $data['quantity'] ?? '';
+$quantity = $data['quantity'] ?? 0;
 $manufacturer = $data['manufacturer'] ?? '';
 $date = $data['date'] ?? '';
-$warranty = ($data['warranty'] ?? ''). ($data['warranty_type'] ?? '');
+$dateObj = new DateTime($date);
+$warranty = ($data['warranty'] ?? '')." ".($data['warranty_type'] ?? '');
 
 $equipment->setName($name);
 $equipment->setPhoto($photo);
 $equipment->setQuantity($quantity);
 $equipment->setManufacturer($manufacturer);
-$equipment->setDate($date);
+$equipment->setDate($dateObj->format('d/m/Y'));
 $equipment->setWarranty($warranty);
 $equipment->setSpecifications($data);
 $equipment->setOwner($_SESSION['id']);

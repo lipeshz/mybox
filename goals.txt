@@ -1,9 +1,4 @@
-=-= CLASSES =-=
-USER
-id, login, password
+=---= GOALS =---=
 
-EQUIPAMENTO
-id, nome, tipo (FK), foto, quantidade, marca, data_aquisiçao, garantia
-
-TIPO 
-id, tipo
+- Magic link
+- 2FA

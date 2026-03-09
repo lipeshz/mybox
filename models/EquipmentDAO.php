@@ -10,11 +10,10 @@ class EquipmentDAO{
     }
 
     public function insertEquip($equipment){
-        $query = "INSERT INTO equipments (name, type, photo, quantity, manufacturer, date, warranty, specifications, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO equipments (name, photo, quantity, manufacturer, date, warranty, specifications, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([
             $equipment->getName(),
-            $equipment->getType(),
             $equipment->getPhoto(),
             $equipment->getQuantity(),
             $equipment->getManufacturer(),
@@ -28,11 +27,10 @@ class EquipmentDAO{
     }
 
     public function editEquip($equipment){
-        $query = "UPDATE equipments SET name = ?, type = ?, photo = ?, quantity = ?, manufacturer = ?, date = ?, warranty = ?, specfications = ?, owner = ? WHERE id = ?";
+        $query = "UPDATE equipments SET name = ?, photo = ?, quantity = ?, manufacturer = ?, date = ?, warranty = ?, specfications = ?, owner = ? WHERE id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([
             $equipment->getName(),
-            $equipment->getType(),
             $equipment->getPhoto(),
             $equipment->getQuantity(),
             $equipment->getManufacturer(),
@@ -68,7 +66,6 @@ class EquipmentDAO{
             $e = new Equipment;
             $e->setId($row['id']);
             $e->setName($row['name']);
-            $e->setType($row['type']);
             $e->setPhoto($row['photo']);
             $e->setQuantity($row['quantity']);
             $e->setManufacturer($row['manufacturer']);
@@ -76,7 +73,6 @@ class EquipmentDAO{
             $e->setWarranty($row['warranty']);
             $e->setSpecifications($row['specification']);
             $e->setOwner($row['owner']);
-
             return $e;
         }
         // Se não encontrar nada, retorna null.
@@ -89,42 +85,38 @@ class EquipmentDAO{
         $stmt->execute([
             $id
         ]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $equipments = [];
         
-        if($row){
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $e = new Equipment;
             $e->setId($row['id']);
             $e->setName($row['name']);
-            $e->setType($row['type']);
             $e->setPhoto($row['photo']);
             $e->setQuantity($row['quantity']);
             $e->setManufacturer($row['manufacturer']);
             $e->setDate($row['date']);
             $e->setWarranty($row['warranty']);
-            $e->setSpecifications($row['specification']);
+            $e->setSpecifications($row['specifications']);
             $e->setOwner($row['owner']);
-
-            return $e;
+            array_push($equipments, $e);
         }
-
-        return null;
+        return $equipments;
     }
 
     public function getEquipmentByManufacturer($manufacturer){
         $query = "SELECT * FROM equipments WHERE manufacturer = ?";
         $stmt = $this->conn->prepare($query);
-
         $stmt->execute([
             $manufacturer
         ]);
+        $equipments = [];
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
 
-        if($row){
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $e = new Equipment;
             $e->setId($row['id']);
             $e->setName($row['name']);
-            $e->setType($row['type']);
             $e->setPhoto($row['photo']);
             $e->setQuantity($row['quantity']);
             $e->setManufacturer($row['manufacturer']);
@@ -132,11 +124,9 @@ class EquipmentDAO{
             $e->setWarranty($row['warranty']);
             $e->setSpecifications($row['specification']);
             $e->setOwner($row['owner']);
-
-            return $e;
+            array_push($equipments, $e);
         }
-
-        return null;
+        return $equipments;
     }
 
     public function getEquipmentByType($type){
@@ -146,14 +136,12 @@ class EquipmentDAO{
         $stmt->execute([
             $type
         ]);
+        $equipments = [];
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if($row){
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $e = new Equipment;
             $e->setId($row['id']);
             $e->setName($row['name']);
-            $e->setType($row['type']);
             $e->setPhoto($row['photo']);
             $e->setQuantity($row['quantity']);
             $e->setManufacturer($row['manufacturer']);
@@ -161,24 +149,21 @@ class EquipmentDAO{
             $e->setWarranty($row['warranty']);
             $e->setSpecifications($row['specification']);
             $e->setOwner($row['owner']);
-
-            return $e;
+            array_push($equipments, $e);
         }
-
-        return null;
+        return $equipments;
     }
 
     public function getAllEquip(){
         $query = "SELECT * FROM equipments";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $equipments = [];
 
-        if($row){
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
             $e = new Equipment;
             $e->setId($row['id']);
             $e->setName($row['name']);
-            $e->setType($row['type']);
             $e->setPhoto(['photo']);
             $e->setQuantity($row['quantity']);
             $e->setManufacturer($row['manufacturer']);
@@ -186,10 +171,8 @@ class EquipmentDAO{
             $e->setWarranty($row['warranty']);
             $e->setSpecifications($row['specification']);
             $e->setOwner($row['owner']);
-
-            return $e;
+            array_push($equipments, $e);
         }
-
-        return null;
+        return $equipments;
     }
 }

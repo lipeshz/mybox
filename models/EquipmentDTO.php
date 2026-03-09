@@ -2,7 +2,7 @@
 class Equipment{
     private $id;
     private $name;
-    private $type;
+    // private $type;
     private $photo;
     private $quantity;
     private $manufacturer;
@@ -27,13 +27,13 @@ class Equipment{
         return $this->name;
     }
 
-    public function setType($type){
-        $this->type = $type;
-    }
+    // public function setType($type){
+    //     $this->type = $type;
+    // }
 
-    public function getType(){
-        return $this->type;
-    }
+    // public function getType(){
+    //     return $this->type;
+    // }
 
     public function setPhoto($photo){
         $this->photo = $photo;
@@ -44,7 +44,7 @@ class Equipment{
     }
 
     public function setQuantity($quantity){
-        $this->quantiity = $quantity;
+        $this->quantity = $quantity;
     }
 
     public function getQuantity(){

@@ -75,14 +75,17 @@ $equipments = $dao->getByOwner($_SESSION['id']);
             <?php 
             if($equipments != []){
                 foreach($equipments as $equipment){
-                    echo $equipment->name;
+                    echo '<p>'.$equipment->getName().'</p>';
+                    echo '<p>'.$equipment->getQuantity().'</p>';
+                    echo '<p>'.$equipment->getManufacturer().'</p>';
+                    echo '<p>'.$equipment->getWarranty().'</p>';
                 }
             }
             ?>
          </main>
     </body>
+
     <script src="../js/submit.js"></script>
     <script src="../js/add_input.js"></script>
     <script src="../js/modal.js"></script>
-    
 </html>
