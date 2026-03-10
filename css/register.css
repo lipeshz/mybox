@@ -1,0 +1,15 @@
+/* Quando a linha tem erro */
+.input-row.input-error input {
+    border: 2px solid #ff4d4d;
+    background-color: #fff5f5;
+}
+
+.input-row .error-message {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    display: none; /* Escondido por padrão */
+}
+
+.input-row.input-error .error-message {
+    display: block; /* Mostra quando a classe de erro está ativa */
+}

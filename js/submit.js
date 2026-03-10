@@ -27,20 +27,20 @@ async function submitData(){
     }
 }
 
-// async function submitData(){
-//     const data = stringBuilder();
-//     window.alert(data);
-//     const response = await fetch('../controllers/equipments_register.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: data
-//     });
-//     try{
-//         const text = await response.text();
-//         console.log(text)
-//     }catch(error){
+async function submitData(){
+    const data = stringBuilder();
+    window.alert(data);
+    const response = await fetch('../controllers/equipments_register.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+    try{
+        const text = await response.text();
+        console.log(text)
+    }catch(error){
 
-//     }
-// }
+    }
+}
