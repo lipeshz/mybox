@@ -12,7 +12,7 @@ function addInput(){
     newInputTitle.classList.add('json-key')
     newInput.classList.add('json-value')
     newInputTitle.placeholder = "Nome do campo"
-    row.classList.add('input-row')
+    row.classList.add('input-form')
 
     const btnRemoveInput = document.createElement('button')
     btnRemoveInput.innerText = 'REMOVE'
@@ -46,7 +46,7 @@ function addInput(){
 }
 
 function stringBuilder(){
-    const dataRows = document.querySelectorAll('.input-row');
+    const dataRows = document.querySelectorAll('.input-form');
     let dataArray = {}
 
     dataRows.forEach(dataRow => {

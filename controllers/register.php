@@ -1,16 +1,21 @@
 <?php
 session_start();
 if(isset($_SESSION['login'])){
-    header('Location:../views/index.php');
+    header('Content-Type: application/json');
+    echo json_encode(["status" => "error", "msg" => "Sessão inválida!"]);
     exit;
 }
 require('../models/UserDAO.php');
 
 $dao = new UserDAO();
 $user = new User();
-$login = $_POST['login'];
-$email = $_POST['email'];
-$password = $_POST['pass'];
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
+
+$login = $data['login'];
+$email = $data['email'];
+$password = $data['password'];
+$errors = [];
 
 $regex_login = '/^[^\s]{6,}$/';
 $regex_email = '/^[^\s@]+@[^\s@]+\.[^\s@]+$/';
@@ -25,7 +30,7 @@ $option = [
 if(isset($login) && preg_match($regex_login, $login)){
     $user->setLogin($login);
 }else{
-    $_SESSION['err_register'];
+    $erros["login_err"] = "Login inválido!";
 }
 
 if(isset($email) && preg_match($regex_email, $email)){

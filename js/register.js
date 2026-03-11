@@ -1,93 +1,144 @@
 const login = document.getElementById('input-login');
 const email = document.getElementById('input-email');
 const password = document.getElementById('input-password');
-const password_confirmation = document.getElementById('input-password-confirmation')
-const regex_login = /^[\w.]{6,}$/;
-const regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const regex_password = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
-const rows = document.querySelectorAll('.input-form');
-const inputs = document.querySelectorAll('.json-value');
+const password_confirmation = document.getElementById('input-password-confirmation');
 
-function dataValidate(){
-    let isValid = true;
+const regex_login = /^(?=\S{6,}$)[\w.]+$/;
+const regex_email = /^(?=\S+$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const regex_password = /^(?=\S{6,}$)(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+
+function dataValidate() {
+    const inputs = document.querySelectorAll('.json-value');
+
     inputs.forEach(input => {
         const row = input.closest('.input-form');
         const inputName = row.getAttribute('data-name');
-        input.addEventListener('blur', () => {
-            if(row.classList.contains('input-error')){
-                fieldValidate(input, row, inputName);
-            }
-        });
 
-        input.addEventListener('blur', () => {
-            fieldValidate(input, row, inputName);
-        })
+        // Validação ao sair do campo (Blur)
+        input.addEventListener('blur', async () => {
+            await fieldValidate(input, row, inputName);
+        });
     });
 }
 
-function fieldValidate(input, row, inputName){
+// Transformamos em async para poder esperar o banco de dados
+async function fieldValidate(input, row, inputName) {
+    let errorsArray = [];
     let errorMsg = "";
-            
-    if(inputName === 'login'){
-        if(!regex_login.test(login.value) && login.value != ''){
-            errorMsg = 'Invalid Login! (6+ chars, letters/numbers/points)';
+    const value = input.value.trim();
+
+    // Se o campo estiver vazio e não for obrigatório, limpamos o erro e paramos
+    if(value === "") {
+        hideError(row);
+        return;
+    }
+
+    if (inputName === 'login') {
+        if (!regex_login.test(value) || value.trim() === "") {
+            errorMsg = 'Login inválido! (6+ caracteres, letras, números ou pontos)';
+            errorsArray.push('login_err');
+        }else{
+            errorsArray = errorsArray.filter(value => value !== 'login_err');
         }
     }
 
-    // VERIFICAR ISSO AQUI
-    const exists = await emailVerify(email.value);
-    if(inputName === 'email' && email.value != ''){
-        if(!regex_email.test(email.value)){
-            errorMsg = 'Invalid E-mail!'
-        }else if(exists){
-            errorMsg = 'E-mail already registered!';
+    if (inputName === 'email') {
+        if (!regex_email.test(value)) {
+            errorMsg = 'E-mail inválido!';
+            errorsArray.push('email_err');
+        }else{
+            // Chamada assíncrona para o banco
+            const exists = await emailVerify(value);
+            if (exists) {
+                errorMsg = 'E-mail já cadastrado!';
+                errorsArray.push('email_err');
+            }else{
+                errorsArray = errorsArray.filter(value => value !== 'email_err')
+            }
         }
     }
 
-    if((inputName === 'password-confirmation') && (password != '' && password_confirmation != '')){
-        if(!regex_password.test(password.value) || !regex_password.test(password_confirmation.value)){
-            errorMsg = 'Invalid password!';
-        }else if(password.value !== password_confirmation.value){
-            errorMsg = 'Password don\'t match!';
+    if (inputName === 'password' || inputName === 'password-confirmation') {
+        // Valida a força da senha
+        if (!regex_password.test(password.value)) {
+            errorMsg = 'Senha fraca! (6+ caracteres, maiúscula, número e símbolo)';
+            errorsArray.push('pass_err');
+        } 
+        // Valida a confirmação (apenas se ambos tiverem algo)
+        else if (password.value && password_confirmation.value && password.value !== password_confirmation.value) {
+            errorMsg = 'As senhas não coincidem!';
+            errorsArray.push('pass_err');
+        }else{
+            errorsArray = errorsArray.filter(value => value !== 'pass_err')
         }
     }
 
-    if(errorMsg){
+    // Feedback Visual
+    if (errorMsg) {
         showError(row, errorMsg);
-    }else{
+    } else {
         hideError(row);
     }
 }
 
-function showError(row, msg){
-    row.classList.add('.input-error');
+async function isFormValid(){
+    // Captura todos os inputs de dados.
+    const inputs = document.querySelectorAll('.json-value');
+    for(const input of inputs){
+        // Itera e define os valores das divs e nomes de campos.
+        const row = document.closest('input-form');
+        const inputName = document.getAttribute('data-name');
+
+        // Revalida os campos
+        await fieldValidate(input, row, inputName);
+    }
+
+    // Verifica a quantidade de erros.
+    const errors = document.querySelectorAll('.input-error');
+    return errors.length === 0;
+}
+
+async function sendData(){
+    if(await isFormValid()){
+        const data = stringBuilder();
+
+        try{
+            const response = await fetch('../controllers/register.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if()
+        }catch(error){
+
+        }
+    }
+}
+
+function showError(row, msg) {
+    row.classList.add('input-error');
     const span = row.querySelector(".error-message");
     if (span) span.innerText = msg;
 }
 
-function hideError(row){
-    row.classList.remove('.input-error');
+function hideError(row) {
+    row.classList.remove('input-error');
     const span = row.querySelector(".error-message");
     if (span) span.innerText = '';
 }
 
-async function emailVerify(email){
-    try{
-        const response = await fetch('../controllers/email_verify.php?email='+encodeURIComponent(email));
+async function emailVerify(emailValue) {
+    try {
+        const response = await fetch('../controllers/email_verify.php?email=' + encodeURIComponent(emailValue));
         const result = await response.json();
         return result.status === "error";
-    }catch(error){
-        console.error('Error:' + error);
+    } catch (error) {
+        console.error('Erro na verificação:', error);
         return false;
     }
-    // const response = await fetch('../controllers/email_verify.php?email='+email, {
-    // });
-    // try{
-    //     const text = await response.text();
-    //     console.log(text)
-    // }catch(error){
-
-    // }
 }
 
 document.addEventListener('DOMContentLoaded', dataValidate);

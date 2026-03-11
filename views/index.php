@@ -26,37 +26,37 @@ $equipments = $dao->getByOwner($_SESSION['id']);
             <div id="modal-content">
                 <span id="btn-close" class="close">&times</span>
                 <form method="POST">
-                    <div class="input-row" data-name="name">
+                    <div class="input-form" data-name="name">
                         <label for="input-name">Name</label>
                         <input type="text" name="name" id="input-name" placeholder="Name" class="json-value" >
                     </div>
                     
-                    <div class="input-row"data-name="photo"> 
+                    <div class="input-form" data-name="photo"> 
                         <label for="input-date" class="json-key">Photo</label>
                         <input type="file" name="photo" id="input-photo" placeholder="Photo" class="json-value">
                     </div>
                     
-                    <div class="input-row" data-name="quantity">
+                    <div class="input-form" data-name="quantity">
                         <label for="input-quantity" class="json-key">Quantity</label>
                         <input type="number" name="quantity" id="input-quantity" placeholder="Quantity" class="json-value">
                     </div>
                     
-                    <div class="input-row" data-name="manufacturer">
+                    <div class="input-form" data-name="manufacturer">
                         <label for="input-manufacturer" class="json-key">Manufacturer</label>
                         <input type="text" name="manufacturer" id="input-manufacturer" placeholder="Manufacturer" class="json-value">
                     </div>
                     
-                    <div class="input-row" data-name="date">
+                    <div class="input-form" data-name="date">
                         <label for="input-date" class="json-key">Date</label>
                         <input type="date" name="date" id="input-date" class="json-value">
                     </div>
                     
-                    <div class="input-row" data-name="warranty">
+                    <div class="input-form" data-name="warranty">
                         <label for="input-warranty" class="json-key">Warranty</label>
                         <input type="number" name="warranty" id="input-warranty" placeholder="Warranty" class="json-value" data-name="warranty_type">
                     </div>
 
-                    <div class="input-row" data-name="warranty_type">
+                    <div class="input-form" data-name="warranty_type">
                         <label for="input-warranty-type">Type</label>
                         <select name="warranty_type" id="input-warranty-type" class="json-value">
                             <option value="month">MONTH</option>

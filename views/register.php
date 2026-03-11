@@ -30,7 +30,7 @@
                 <input type="password" name="confirm_pass" id="input-password-confirmation" class="json-value" required>
                 <span class="error-message"></span>
             </div>
-            <button>Login</button>
+            <button id="button-submit" type="button">Login</button>
         </form>  
     </body>
     <script src="../js/register.js"></script>
