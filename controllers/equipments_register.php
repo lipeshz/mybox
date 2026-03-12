@@ -11,7 +11,7 @@ $equipment = new Equipment();
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
-if(!$data){
+if(!isset($data)){
     echo json_encode(["status" => "error", "msg" => "Invalid data!"]);
     exit;
 }

@@ -25,13 +25,15 @@
                 <input type="password" name="pass" id="input-password" class="json-value" required>
             </div>
 
-            <div class="input-form" data-name="password-confirmation">
+            <div class="input-form" data-name="password_confirmation">
                 <label for="input-password-confirmation">Confirm password</label>
                 <input type="password" name="confirm_pass" id="input-password-confirmation" class="json-value" required>
                 <span class="error-message"></span>
             </div>
-            <button id="button-submit" type="button">Login</button>
+            <button id="button-submit" onclick="sendData()" type="button">Login</button>
         </form>  
     </body>
+    <script src="../js/stringBuilder.js"></script>
+    <script src="../js/add_input.js"></script>
     <script src="../js/register.js"></script>
 </html>

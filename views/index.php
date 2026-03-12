@@ -88,4 +88,5 @@ $equipments = $dao->getByOwner($_SESSION['id']);
     <script src="../js/submit.js"></script>
     <script src="../js/add_input.js"></script>
     <script src="../js/modal.js"></script>
+    <script src="../js/stringBuilder.js"></script>
 </html>

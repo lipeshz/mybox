@@ -44,18 +44,3 @@ function addInput(){
     // Insere a div no container
     inputContainer.append(row)
 }
-
-function stringBuilder(){
-    const dataRows = document.querySelectorAll('.input-form');
-    let dataArray = {}
-
-    dataRows.forEach(dataRow => {
-        const key = dataRow.getAttribute('data-name');
-        const value = dataRow.querySelector('.json-value').value
-
-        if(key && value.length > 0){
-            dataArray[key] = value
-        }
-    });
-    return JSON.stringify(dataArray)
-}

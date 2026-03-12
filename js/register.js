@@ -2,14 +2,13 @@ const login = document.getElementById('input-login');
 const email = document.getElementById('input-email');
 const password = document.getElementById('input-password');
 const password_confirmation = document.getElementById('input-password-confirmation');
+const inputs = document.querySelectorAll('.json-value');
 
 const regex_login = /^(?=\S{6,}$)[\w.]+$/;
 const regex_email = /^(?=\S+$)[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const regex_password = /^(?=\S{6,}$)(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
 
 function dataValidate() {
-    const inputs = document.querySelectorAll('.json-value');
-
     inputs.forEach(input => {
         const row = input.closest('.input-form');
         const inputName = row.getAttribute('data-name');
@@ -44,13 +43,13 @@ async function fieldValidate(input, row, inputName) {
 
     if (inputName === 'email') {
         if (!regex_email.test(value)) {
-            errorMsg = 'E-mail inválido!';
+            errorMsg = 'Invalid e-mail!';
             errorsArray.push('email_err');
         }else{
             // Chamada assíncrona para o banco
             const exists = await emailVerify(value);
             if (exists) {
-                errorMsg = 'E-mail já cadastrado!';
+                errorMsg = 'E-mail already in use!';
                 errorsArray.push('email_err');
             }else{
                 errorsArray = errorsArray.filter(value => value !== 'email_err')
@@ -58,7 +57,7 @@ async function fieldValidate(input, row, inputName) {
         }
     }
 
-    if (inputName === 'password' || inputName === 'password-confirmation') {
+    if (inputName === 'password' || inputName === 'password_confirmation') {
         // Valida a força da senha
         if (!regex_password.test(password.value)) {
             errorMsg = 'Senha fraca! (6+ caracteres, maiúscula, número e símbolo)';
@@ -86,8 +85,8 @@ async function isFormValid(){
     const inputs = document.querySelectorAll('.json-value');
     for(const input of inputs){
         // Itera e define os valores das divs e nomes de campos.
-        const row = document.closest('input-form');
-        const inputName = document.getAttribute('data-name');
+        const row = input.closest('.input-form');
+        const inputName = row.getAttribute('data-name');
 
         // Revalida os campos
         await fieldValidate(input, row, inputName);
@@ -98,23 +97,78 @@ async function isFormValid(){
     return errors.length === 0;
 }
 
-async function sendData(){
-    if(await isFormValid()){
-        const data = stringBuilder();
+// async function sendData(){
+//     if(await isFormValid()){
+//         const data = stringBuilder();
 
-        try{
-            const response = await fetch('../controllers/register.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
+//         try{
+//             const response = await fetch('../controllers/register.php', {
+//                 method: 'POST',
+//                 headers: {'Content-Type': 'application/json'},
+//                 body: JSON.stringify(data)
+//             });
 
-            const result = await response.json();
+//             const result = await response.json();
 
-            if()
-        }catch(error){
+//             if(result.errors){
+//                 inputs.forEach(input => {
+//                     const row = input.closest('.input-form');
+//                     const inputName = row.getAttribute('data-name');
 
+//                     if(result.errors[inputName]){
+//                         showError(row, result.errors[inputName]);
+//                     }else{
+//                         hideError(row);
+//                     }
+
+//                     if(result.status === "success"){
+//                         window.location.href = "../views/index.php";
+//                     }
+//                 });
+//             }
+//         }catch(error){
+//             console.error('Erro:', error);
+//         }
+//     }
+// }
+
+async function sendData() {
+    // 1. Pega os dados da stringBuilder (que deve estar no escopo global)
+    const data = stringBuilder();
+
+    try {
+        const response = await fetch('../controllers/register.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        // 2. Capturamos a resposta bruta como TEXTO primeiro
+        const responseText = await response.text();
+        
+        // LOG de segurança: Aqui você verá qualquer erro do PHP no Console (F12)
+        console.log("Resposta bruta do servidor:", responseText);
+
+        // 3. Tentamos transformar o texto em um objeto JSON
+        try {
+            const result = JSON.parse(responseText);
+            
+            if (result.status === "success") {
+                alert("Sucesso: " + result.msg);
+                // window.location.href = 'sucesso.php';
+            } else {
+                console.warn("Erros encontrados:", result.errors);
+                // Aqui você chamaria aquela lógica de mapear os erros nos campos
+            }
+        } catch (jsonError) {
+            console.error("O servidor não retornou um JSON válido. Verifique o console.");
+            console.error("Texto recebido:", responseText);
         }
+
+    } catch (networkError) {
+        console.error("Erro na requisição (Rede/Caminho):", networkError);
     }
 }
 

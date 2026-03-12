@@ -14,14 +14,14 @@ class UserDAO{
 
     public function insertUser($user){
         // Prepara a query SQL
-        $query = "INSERT INTO users (login, email, password) VALUES (?, ?, ?)";
+        $query = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
         // Subdtitui os campos pelos dados do objeto.
         $stmt->execute([
             $user->getLogin(),
-            $user->getEmail(),
-            $user->getPassword()
+            $user->getPassword(),
+            $user->getEmail()
         ]);
 
         // Verifica se alterou algo no banco.
